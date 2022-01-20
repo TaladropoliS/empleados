@@ -87,7 +87,7 @@ if DEBUG:  # ###################################################################
         }
     }
 else:
-    # ##### DB Pythonanywere
+    # ##### DB Produccion
     DATABASES = {
         #     'default': {
         #         'ENGINE': 'django.db.backends.mysql',
