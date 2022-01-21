@@ -1,0 +1,44 @@
+{% load static %}{% load humanize %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+    <title>{% block Title %}{% endblock Title %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/lib/foundation_6/css/foundation.min.css' %}">
+</head>
+
+<body>
+{# Bloque NAV-BAR #}
+{% block nav-bar %}
+    {% include 'core/includes/nav-bar.html' %}
+{% endblock nav-bar %}
+
+{# Bloque CONTENIDO #}
+{% block content %}
+{% endblock content %}
+
+{# Bloque FOOTER #}
+{% block footer %}
+    {% include 'core/includes/footer.html' %}
+{% endblock footer %}
+
+{# Bloque SCRIPTS BASE #}
+{% block script_base %}
+    <script src="{% static 'core/lib/foundation_6/js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'core/lib/foundation_6/js/vendor/what-input.js' %}"></script>
+    <script src="{% static 'core/lib/foundation_6/js/vendor/foundation.min.js' %}"></script>
+    <script>
+      $(document).foundation();
+    </script>
+{% endblock script_base %}
+
+{# Bloque SCRIPT ADICIONAL #}
+{% block script_adicional %}
+{% endblock script_adicional %}
+</body>
+</html>

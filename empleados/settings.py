@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 
@@ -20,10 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+""" Instalar pip install python-decouple para proteger nuestras variables de entorno """
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = False   # En PRODUCCION #######################################################
+DEBUG = True  # lOCAL
 
 ALLOWED_HOSTS = []
 
@@ -36,10 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # utilidades
+    'django.contrib.humanize',
+    'ckeditor',
     # apps_locales
     'app.departamento.apps.DepartamentoConfig',
     'app.persona.apps.PersonaConfig',
-    'app.home.apps.HomeConfig',
+    'app.core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,20 +82,34 @@ WSGI_APPLICATION = 'empleados.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 if DEBUG:  # ####################################################################
-    # ##### DB Local
+    # ##### DB Local MySQL
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': config('DB_NAME_LOCAL'),
+    #         'USER': config('DB_USER_LOCAL'),
+    #         'PASSWORD': config('DB_PASSWORD_LOCAL'),
+    #         'HOST': config('DB_HOST_LOCAL'),
+    #         'PORT': config('DB_PORT_LOCAL'),
+    #         "OPTION": {
+    #             'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
+    #         }
+    #     }
+    # }
+    # ##### DB Local POSTGRES
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': config('DB_NAME_LOCAL'),
-            'USER': config('DB_USER_LOCAL'),
-            'PASSWORD': config('DB_PASSWORD_LOCAL'),
-            'HOST': config('DB_HOST_LOCAL'),
-            'PORT': config('DB_PORT_LOCAL'),
-            "OPTION": {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES', innodb_strict_mode=1",
-            }
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('P_DB_NAME_LOCAL'),
+            'USER': config('P_DB_USER_LOCAL'),
+            'PASSWORD': config('P_DB_PASSWORD_LOCAL'),
+            'HOST': config('P_DB_HOST_LOCAL'),
+            'PORT': config('P_DB_PORT_LOCAL'),
         }
     }
+# db: dbempleados
+# user: emple
+# password: empleroot
 else:
     # ##### DB Produccion
     DATABASES = {
@@ -142,7 +162,27 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+if not DEBUG:
+    STATIC_ROOT = '/home/*****/***********/static/'  # ##### Crear en P*****A****** ######
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Ckeditor
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter',
+             'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            # ['RemoveFormat', 'Source']
+        ]
+    }
+}
